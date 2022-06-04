@@ -1,0 +1,7 @@
+
+const ActionConstants = {
+    AUTHENTICATE_USER_SUCCESS: "AUTHENTICATE_USER_SUCCESS",
+    AUTHENTICATE_USER_ERROR: "AUTHENTICATE_USER_ERROR"
+};
+
+export default ActionConstants;
