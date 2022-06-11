@@ -6,17 +6,7 @@ import ActionConstants from '../reduxConstants';
 
 function AuthenticateUserSuccess(action) {
     if (action.payload.token != undefined && action.payload.token != null && action.payload.token != "") {
-
         navigateTo("Main");
-        showMessage({
-            message: "Bienvenido",
-            description: `Bienvenido a la app ${action.payload.usuario.name ?? ""}`,
-            animated: true,
-            autoHide: true,
-            duration: 2000,
-            type: "success",
-            position: "bottom"
-        });
     }
     else {
         showMessage({

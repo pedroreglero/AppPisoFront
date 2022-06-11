@@ -12,7 +12,7 @@ export default function userReducer(state = defaultState, action) {
         case ActionConstants.AUTHENTICATE_USER_SUCCESS:
             {
                 if (action.payload.token != undefined && action.payload.token != null && action.payload.token != "") {
-                    state = { ...state, usuario: action.payload.usuario, token: action.payload.token };
+                    state = { ...state, usuario: action.payload.usuario, token: action.payload.token,  };
                 }
                 return state;
             }

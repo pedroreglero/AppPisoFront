@@ -19,6 +19,7 @@ import { applyMiddleware, createStore } from 'redux';
 import userReducer from './redux/reducers/userReducer';
 import createSagaMiddleware from 'redux-saga'
 import thunk from 'redux-thunk';
+import Register from './views/register';
 
 
 
@@ -29,7 +30,9 @@ export default function App() {
 
   let [fontsLoaded] = useFonts({
     "Cereal": require("./assets/fonts/Cereal.otf"),
-    "CerealBold": require("./assets/fonts/CerealBold.otf")
+    "CerealBold": require("./assets/fonts/CerealBold.otf"),
+    "Poppins": require("./assets/fonts/PoppinsRegular.ttf"),
+    "PoppinsBold": require("./assets/fonts/PoppinsBold.ttf")
   });
 
   if (!fontsLoaded) {
@@ -56,6 +59,7 @@ export default function App() {
             <Stack.Navigator>
               <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
               <Stack.Screen name="Main" options={{ headerShown: false, gestureEnabled: false }} component={Main} />
+              <Stack.Screen name="Register" options={{ headerShown: false }} component={Register} />
             </Stack.Navigator>
           </NavigationContainer>
         </ApplicationProvider>
