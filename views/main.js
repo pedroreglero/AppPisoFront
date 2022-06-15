@@ -1,6 +1,6 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet, View, Text, Image, TouchableOpacity, BackHandler } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity, BackHandler, ImageBackground, TouchableWithoutFeedback, Animated } from "react-native";
 import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Dashboard from "./dashboard";
@@ -10,55 +10,70 @@ import Money from "./money";
 import Groceries from "./groceries";
 import { LinearGradient } from "expo-linear-gradient";
 import { PrimaryColor, SecondaryColor } from '../utilities/ColorPalette';
+import * as Animatable from 'react-native-animatable';
+
 
 const TabNavigator = createBottomTabNavigator();
 const DrawerNavigator = createDrawerNavigator();
 
-var plusShown = false;
+
 
 function CustomTabBar({ state, descriptors, navigation, insets }) {
+    
+
+    const animateShow = () => {
+        buttonShow1Ref.animate({ 0: { opacity: 0 }, 1: { opacity: 1 } });
+        buttonShow2Ref.animate({ 0: { opacity: 0 }, 1: { opacity: 1 } });
+    }
+
     return (
-        <View style={{marginHorizontal: 20, marginBottom: insets.bottom > 0 ? 0 : 15}}>
-            <View style={{ flexDirection: "row", backgroundColor: "#F8F8F8", justifyContent: "space-around", width: "100%", height: 66, borderWidth: 2, borderColor: "#FFFFFF", marginBottom: insets.bottom, borderRadius: 20, shadowColor: "rgba(0, 0, 0, 0.08)", shadowOffset: { height: 4, width: 0 }, shadowRadius: 4, shadowOpacity: 1 }}>
-                <View style={{alignSelf: "center"}}>
+        <View style={{ backgroundColor: "#F8F8F8" }}>
+            <View style={{ flexDirection: "row", backgroundColor: "#F8F8F8", justifyContent: "space-around", width: "100%", height: 66, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, borderBottomWidth: 0, marginBottom: insets.bottom == 0 ? 20 : insets.bottom }}>
+                <View style={{ alignSelf: "center" }}>
                     <TouchableOpacity onPress={() => navigation.navigate({ name: "Dashboard" })}>
-                        <View style={{ display: state.index == 0 ? "flex" : "none", backgroundColor: "#F8F8F8", position: "absolute", height: 55, width: 55, alignSelf: "center", top: -8, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, shadowColor: "#000000", shadowOffset: {height: 4}, shadowOpacity: 0.3, shadowRadius: 4}}>
+                        <View style={{ display: state.index == 0 ? "flex" : "none", backgroundColor: "#F8F8F8", position: "absolute", height: 55, width: 55, alignSelf: "center", top: -8, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, shadowColor: "#000000", shadowOffset: { height: 4 }, shadowOpacity: 0.3, shadowRadius: 4 }}>
                         </View>
                         <Image source={require("../assets/images/home.png")} style={{ width: 37, height: 37, resizeMode: "contain" }}></Image>
                     </TouchableOpacity>
                 </View>
-                <View style={{alignSelf: "center"}}>
+                <View style={{ alignSelf: "center" }}>
                     <TouchableOpacity onPress={() => navigation.navigate({ name: "Ranking" })}>
-                        <View style={{ display: state.index == 1 ? "flex" : "none", backgroundColor: "#F8F8F8", position: "absolute", height: 55, width: 55, alignSelf: "center", top: -8, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, shadowColor: "#000000", shadowOffset: {height: 4}, shadowOpacity: 0.3, shadowRadius: 4}}>
+                        <View style={{ display: state.index == 1 ? "flex" : "none", backgroundColor: "#F8F8F8", position: "absolute", height: 55, width: 55, alignSelf: "center", top: -8, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, shadowColor: "#000000", shadowOffset: { height: 4 }, shadowOpacity: 0.3, shadowRadius: 4 }}>
                         </View>
                         <Image source={require("../assets/images/ranking.png")} style={{ width: 37, height: 37, resizeMode: "contain" }}></Image>
                     </TouchableOpacity>
                 </View>
-                <View style={{alignSelf: "center"}}>
-                    <TouchableOpacity onPress={() => {
-                        if (plusShown) {
-
-                        }
-                        else {
-                            
-                            plusShown = true;
-                        }
-                    }}>
-                        <View style={{ display: "none", backgroundColor: "#F8F8F8", position: "absolute", height: 55, width: 55, alignSelf: "center", top: -8, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, shadowColor: "#000000", shadowOffset: {height: 4}, shadowOpacity: 0.3, shadowRadius: 4}}>
-                        </View>
-                        <Image source={require("../assets/images/add.png")} style={{ width: 37, height: 37, resizeMode: "contain" }}></Image>
+                <View style={{ position: 'absolute', top: -100, left: 0, right: 0, bottom: 80, justifyContent: 'flex-end', alignItems: 'center' }}>
+                    <TouchableOpacity>
+                        <Animatable.View ref={buttonShow1Ref} style={{ marginBottom: 10, width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(0, 0, 0, 0.25)", shadowRadius: 4, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 1 }}>
+                            <FontAwesome name="tasks" size={30} ></FontAwesome>
+                        </Animatable.View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Animatable.View ref={buttonShow2Ref} style={{ width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(0, 0, 0, 0.25)", shadowRadius: 4, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 1 }}>
+                            <FontAwesome name="home" size={30} ></FontAwesome>
+                        </Animatable.View>
                     </TouchableOpacity>
                 </View>
-                <View style={{alignSelf: "center"}}>
+                <View style={{ alignSelf: "center", alignItems: "center" }}>
+                        <View style={{ display: "flex", backgroundColor: "#F8F8F8", position: "absolute", height: 55, width: 55, alignSelf: "center", top: -8, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, shadowColor: "#000000", shadowOffset: { height: 4 }, shadowOpacity: 0.3, shadowRadius: 4 }}>
+                        </View>
+                    <TouchableOpacity onPress={animateShow}>
+                        <Animated.View style={{ justifyContent: "center" }}>
+                            <Image source={require("../assets/images/add.png")} style={{ width: 40, height: 40, resizeMode: "contain", alignSelf: "center", top: 3 }}></Image>
+                        </Animated.View>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ alignSelf: "center" }}>
                     <TouchableOpacity onPress={() => navigation.navigate({ name: "Money" })}>
-                        <View style={{ display: state.index == 2 ? "flex" : "none", backgroundColor: "#F8F8F8", position: "absolute", height: 55, width: 55, alignSelf: "center", top: -8, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, shadowColor: "#000000", shadowOffset: {height: 4}, shadowOpacity: 0.3, shadowRadius: 4}}>
+                        <View style={{ display: state.index == 2 ? "flex" : "none", backgroundColor: "#F8F8F8", position: "absolute", height: 55, width: 55, alignSelf: "center", top: -8, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, shadowColor: "#000000", shadowOffset: { height: 4 }, shadowOpacity: 0.3, shadowRadius: 4 }}>
                         </View>
                         <Image source={require("../assets/images/compra.png")} style={{ width: 37, height: 37, resizeMode: "contain" }}></Image>
                     </TouchableOpacity>
                 </View>
-                <View style={{alignSelf: "center"}}>
+                <View style={{ alignSelf: "center" }}>
                     <TouchableOpacity onPress={() => navigation.navigate({ name: "Groceries" })}>
-                        <View style={{ display: state.index == 3 ? "flex" : "none", backgroundColor: "#F8F8F8", position: "absolute", height: 55, width: 55, alignSelf: "center", top: -8, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, shadowColor: "#000000", shadowOffset: {height: 4}, shadowOpacity: 0.3, shadowRadius: 4}}>
+                        <View style={{ display: state.index == 3 ? "flex" : "none", backgroundColor: "#F8F8F8", position: "absolute", height: 55, width: 55, alignSelf: "center", top: -8, borderWidth: 2, borderColor: "#FFFFFF", borderRadius: 20, shadowColor: "#000000", shadowOffset: { height: 4 }, shadowOpacity: 0.3, shadowRadius: 4 }}>
                         </View>
                         <Image source={require("../assets/images/dinero.png")} style={{ width: 37, height: 37, resizeMode: "contain" }}></Image>
                     </TouchableOpacity>
@@ -70,18 +85,20 @@ function CustomTabBar({ state, descriptors, navigation, insets }) {
 
 function MainTabs() {
     return (
-        <TabNavigator.Navigator tabBar={CustomTabBar}>
-            <TabNavigator.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false, title: "Inicio", tabBarIcon: (props) => { return <FontAwesome name="home" color={props.color} size={props.size} />; } }} />
-            <TabNavigator.Screen name="Ranking" component={Ranking} options={{ headerShown: false, title: "Ranking", tabBarIcon: (props) => { return <FontAwesome name="trophy" color={props.color} size={props.size} />; } }} />
-            <TabNavigator.Screen name="Money" component={Money} options={{ headerShown: false, title: "Dinero", tabBarIcon: (props) => { return <FontAwesome name="money" color={props.color} size={props.size} />; } }} />
-            <TabNavigator.Screen name="Groceries" component={Groceries} options={{ headerShown: false, title: "Compras", tabBarIcon: (props) => { return <FontAwesome name="shopping-cart" color={props.color} size={props.size} />; } }} />
-        </TabNavigator.Navigator>
+        <ImageBackground imageStyle={{ resizeMode: "cover" }} source={require("../assets/images/bgMain.png")} style={{ flex: 1 }}>
+            <TabNavigator.Navigator tabBar={CustomTabBar}>
+                <TabNavigator.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false, title: "Inicio", tabBarIcon: (props) => { return <FontAwesome name="home" color={props.color} size={props.size} />; } }} />
+                <TabNavigator.Screen name="Ranking" component={Ranking} options={{ headerShown: false, title: "Ranking", tabBarIcon: (props) => { return <FontAwesome name="trophy" color={props.color} size={props.size} />; } }} />
+                <TabNavigator.Screen name="Money" component={Money} options={{ headerShown: false, title: "Dinero", tabBarIcon: (props) => { return <FontAwesome name="money" color={props.color} size={props.size} />; } }} />
+                <TabNavigator.Screen name="Groceries" component={Groceries} options={{ headerShown: false, title: "Compras", tabBarIcon: (props) => { return <FontAwesome name="shopping-cart" color={props.color} size={props.size} />; } }} />
+            </TabNavigator.Navigator>
+        </ImageBackground>
     );
 }
 
 function Drawer() {
     return (
-        <LinearGradient colors={[PrimaryColor(), PrimaryColor(), "white"]} style={{ flex: 1, padding: 10 }}>
+        <ImageBackground source={require("../assets/images/bgDrawer.png")} style={{ flex: 1, padding: 10 }}>
             <SafeAreaView>
                 <View>
                     <TouchableOpacity activeOpacity={0.8}>
@@ -89,11 +106,12 @@ function Drawer() {
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
-        </LinearGradient>
+        </ImageBackground>
     );
 }
 
 export default function Main() {
+
     const handleBackPress = () => {
         return true;
     };

@@ -1,8 +1,20 @@
 import { showMessage } from 'react-native-flash-message';
-import { navigateTo } from '../../utilities/RootNavigator';
+import { goBack, navigateTo } from '../../utilities/RootNavigator';
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import ActionConstants from '../reduxConstants';
 
+function RegisterUserSuccess(action) {
+    showMessage({
+        message: "Usuario registrado correctamente",
+        animated: true,
+        autoHide: true,
+        duration: 1400,
+        type: "success"
+    });
+    setTimeout(() => {
+        goBack();
+    }, 600)
+}
 
 function AuthenticateUserSuccess(action) {
     if (action.payload.token != undefined && action.payload.token != null && action.payload.token != "") {
@@ -35,4 +47,6 @@ function AuthenticateUserError(action) {
 export function* usersSaga() {
     yield takeEvery(ActionConstants.AUTHENTICATE_USER_SUCCESS, AuthenticateUserSuccess);
     yield takeEvery(ActionConstants.AUTHENTICATE_USER_ERROR, AuthenticateUserError);
+    yield takeEvery(ActionConstants.REGISTER_USER_SUCCESS, RegisterUserSuccess);
+    yield takeEvery(ActionConstants.REGISTER_USER_ERROR, AuthenticateUserError);
 }

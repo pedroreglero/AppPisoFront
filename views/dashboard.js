@@ -1,6 +1,6 @@
 import { List, Divider, ListItem } from '@ui-kitten/components';
-import { useEffect } from 'react';
-import { View, Text, Button, TouchableOpacity } from 'react-native';
+import { useEffect, useLayoutEffect } from 'react';
+import { View, Text, Button, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import ActionConstants from '../redux/reduxConstants';
@@ -9,10 +9,12 @@ import { FontAwesome } from "@expo/vector-icons";
 import { PrimaryColor, SecondaryColor } from '../utilities/ColorPalette';
 import InsetShadow from 'react-native-inset-shadow';
 import { toggleDrawer } from '../utilities/RootNavigator';
+import { LinearGradient } from 'expo-linear-gradient';
+import ShimmerPlaceholder from 'react-native-shimmer-placeholder';
 
 
 export default function Dashboard() {
-
+    
     const dispatch = useDispatch();
 
     // contextos
@@ -27,7 +29,7 @@ export default function Dashboard() {
     const calculateTimeLeft = (date) => {
         const today = new Date();
         const taskDate = new Date(date);
-        const diff = Math.abs(today.getTime() - taskDate.getTime());
+        const diff = today.getTime() - taskDate.getTime();
         const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
         const diffHours = Math.ceil(diff / (1000 * 3600));
         const diffMinutes = Math.ceil(diff / (1000 * 60));
@@ -38,17 +40,20 @@ export default function Dashboard() {
         else if (diffMinutes > 60) {
             return "Quedan " + diffHours + " horas";
         }
-        else {
+        else if (diffMinutes >= 0) {
             return "Quedan " + diffMinutes + " minutos";
+        }
+        else {
+            return "Fuera de plazo";
         }
     }
 
-    const getTimeColor = (date) =>  {
+    const getTimeColor = (date) => {
         const today = new Date();
         const taskDate = new Date(date);
-        const diff = Math.abs(today.getTime() - taskDate.getTime());
+        const diff = today.getTime() - taskDate.getTime();
         const diffHours = diff / (1000 * 3600);
-        if (diffHours > 72)  {
+        if (diffHours > 72) {
             return "green";
         }
         else if (diffHours > 24) {
@@ -59,9 +64,21 @@ export default function Dashboard() {
         }
     }
 
+    const getTaskIcon = (finishedOn, cancelledOn) => {
+        if (finishedOn != null) {
+            return <Image style={{ width: 30, height: 30, resizeMode: "contain", alignSelf: "center", marginRight: 5 }} source={require("../assets/images/circulo.png")} ></Image>
+        }
+        else if (cancelledOn != null) {
+            return <Image style={{ width: 30, height: 30, resizeMode: "contain", alignSelf: "center", marginRight: 5 }} source={require("../assets/images/circulo.png")} ></Image>
+        }
+        else {
+            return <Image style={{ width: 30, height: 30, resizeMode: "contain", alignSelf: "center", marginRight: 5 }} source={require("../assets/images/circuloCheck.png")} ></Image>
+        }
+    }
+
     const renderItem = ({ item, index }) => (
         <View style={{ marginHorizontal: 30, marginVertical: 5, width: "100%", flexDirection: "row" }}>
-            <FontAwesome name='list-alt' size={25} style={{ alignSelf: "center", marginRight: 20 }} />
+            {getTaskIcon(item.finishedOn, item.cancelledOn)}
             <View>
                 <Text style={{ fontSize: 18, color: "gray" }}>{item.name}</Text>
                 <Text style={{ color: getTimeColor(item.dueTo) }}>{calculateTimeLeft(item.dueTo)}</Text>
@@ -70,23 +87,26 @@ export default function Dashboard() {
     );
 
     return (
-        <SafeAreaView style={{ padding: 10 }}>
-            <View style={{flexDirection: "row", justifyContent: "space-between", marginBottom: 15}}>
-                <TouchableOpacity hitSlop={{bottom: 20, left: 20, right: 20, top: 20}} onPress={() => {
-                    toggleDrawer();
-                }}>
-                    <FontAwesome name='bars' size={28} style={{marginLeft: 10}} />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <FontAwesome name="bell" size={28} style={{ marginRight: 10, color: "#f7db14" }}></FontAwesome>
-                </TouchableOpacity>
-            </View>
-            <Text style={{ fontSize: 22, marginBottom: 20, marginLeft: 10 }}>Bienvenido {usuariosContext.usuario.name}</Text>
-            <View style={{ marginLeft: 20 }}>
-                <Text style={{ fontSize: 18, textDecorationLine: "underline", marginBottom: 5 }}>MIS TAREAS</Text>
-                <List ItemSeparatorComponent={Divider} style={{ backgroundColor: "transparent", paddingHorizontal: 10, paddingVertical: 5, maxHeight: 180, minHeight: 180, height: 180 }} data={usuariosContext.usuario.assigned_Tasks} renderItem={renderItem} />
-            </View>
-
-        </SafeAreaView>
+        <ImageBackground source={require("../assets/images/bgMain.png")} style={{ flex: 1 }}>
+            <SafeAreaView style={{ padding: 10, flex: 1 }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15 }}>
+                    <TouchableOpacity hitSlop={{ bottom: 20, left: 20, right: 20, top: 20 }} onPress={() => {
+                        toggleDrawer();
+                    }}>
+                        <Image source={require("../assets/images/burgir.png")} style={{ marginLeft: 10, width: 40, height: 40, resizeMode: "contain" }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Image source={require("../assets/images/bell.png")} style={{ marginRight: 10, width: 40, height: 40, resizeMode: "contain" }} />
+                    </TouchableOpacity>
+                </View>
+                <Text style={{ fontSize: 22, marginBottom: 20, marginLeft: 10, color: "#444444", fontFamily: "PoppinsBold", letterSpacing: -0.33333, fontWeight: "700" }}>BIENVENIDO, {usuariosContext.usuario.name}</Text>
+                <InsetShadow shadowColor="#000000" shadowOpacity={0.5} shadowOffset={4} shadowRadius={4} containerStyle={{ backgroundColor: "rgba(255, 255, 255, 0.4)", borderWidth: 1, borderColor: "#FFFFFF", height: 250, marginLeft: 30, marginRight: 30, borderRadius: 10, padding: 0 }}>
+                    <View style={{ marginLeft: 20 }}>
+                        <Text style={{ color: "#FFFFFF", textShadowColor: "rgba(0, 0, 0, 0.1)", textShadowRadius: 4, textShadowOffset: { height: 4, width: 0 }, fontSize: 22, fontFamily: "PoppinsBold", lineHeight: 33, fontWeight: "700", marginLeft: 5, marginTop: 10 }}>MIS TAREAS</Text>
+                        <List style={{ backgroundColor: "transparent", paddingHorizontal: 10, paddingVertical: 5, height: "100%" }} data={usuariosContext.usuario.assigned_Tasks} renderItem={renderItem} />
+                    </View>
+                </InsetShadow>
+            </SafeAreaView>
+        </ImageBackground>
     );
 }
