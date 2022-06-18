@@ -115,7 +115,7 @@ function MainTabs() {
 
 function Drawer() {
     return (
-        <ImageBackground source={require("../assets/images/bgDrawer.png")} style={{ flex: 1, padding: 10 }}>
+        <ImageBackground resizeMethod='resize' resizeMode='contain' source={require("../assets/images/bgDrawer.png")} style={{ flex: 1, padding: 10 }}>
             <SafeAreaView>
                 <View>
                     <TouchableOpacity activeOpacity={0.8}>

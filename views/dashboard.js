@@ -1,6 +1,6 @@
 import { List, Divider, ListItem } from '@ui-kitten/components';
 import { useEffect, useLayoutEffect } from 'react';
-import { View, Text, Button, TouchableOpacity, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Button, TouchableOpacity, Image, ImageBackground, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import ActionConstants from '../redux/reduxConstants';
@@ -20,7 +20,7 @@ export default function Dashboard() {
 
     // contextos
     const usuariosContext = useSelector(store => store.usuarios);
-    debugger;
+    
     // test data
     const data = new Array(8).fill({
         taskName: "Recoger basura",
@@ -101,12 +101,19 @@ export default function Dashboard() {
                     </TouchableOpacity>
                 </View>
                 <Text style={{ fontSize: 22, marginBottom: 20, marginLeft: 10, color: "#444444", fontFamily: "PoppinsBold", letterSpacing: -0.33333, fontWeight: "700" }}>BIENVENIDO, {usuariosContext.usuario.name}</Text>
-                <InsetShadow shadowColor="#000000" shadowOpacity={0.5} shadowOffset={4} shadowRadius={4} containerStyle={{ backgroundColor: "rgba(255, 255, 255, 0.4)", borderWidth: 1, borderColor: "#FFFFFF", height: 250, marginLeft: 30, marginRight: 30, borderRadius: 10, padding: 0 }}>
+                <InsetShadow shadowColor="#000000" shadowOpacity={0.5} shadowOffset={4} shadowRadius={4} containerStyle={{ marginBottom: 30, backgroundColor: "rgba(255, 255, 255, 0.4)", borderWidth: 1, borderColor: "#FFFFFF", height: 250, marginLeft: 30, marginRight: 30, borderRadius: 10, padding: 0 }}>
                     <View style={{ marginLeft: 20 }}>
                         <Text style={{ color: "#FFFFFF", textShadowColor: "rgba(0, 0, 0, 0.1)", textShadowRadius: 4, textShadowOffset: { height: 4, width: 0 }, fontSize: 22, fontFamily: "PoppinsBold", lineHeight: 33, fontWeight: "700", marginLeft: 5, marginTop: 10 }}>MIS TAREAS</Text>
                         <List style={{ backgroundColor: "transparent", paddingHorizontal: 10, paddingVertical: 5, height: "100%" }} data={usuariosContext.usuario.assigned_Tasks} renderItem={renderItem} />
                     </View>
                 </InsetShadow>
+                <InsetShadow shadowColor="#000000" shadowOpacity={0.5} shadowOffset={4} shadowRadius={4} containerStyle={{ backgroundColor: "rgba(255, 255, 255, 0.4)", borderWidth: 1, borderColor: "#FFFFFF", height: 250, marginLeft: 30, marginRight: 30, borderRadius: 10, padding: 0 }}>
+                    <View style={{ marginLeft: 20 }}>
+                        <Text style={{ color: "#FFFFFF", textShadowColor: "rgba(0, 0, 0, 0.1)", textShadowRadius: 4, textShadowOffset: { height: 4, width: 0 }, fontSize: 22, fontFamily: "PoppinsBold", lineHeight: 33, fontWeight: "700", marginLeft: 5, marginTop: 10 }} numberOfLines={1}>TAREAS DEL PISO - PEDRO PABLO</Text>
+                        <List style={{ backgroundColor: "transparent", paddingHorizontal: 10, paddingVertical: 5, height: "100%" }} data={usuariosContext.usuario.assigned_Tasks} renderItem={renderItem} />
+                    </View>
+                </InsetShadow>
+
             </SafeAreaView>
         </ImageBackground>
     );
