@@ -1,6 +1,6 @@
 import { List, Divider, ListItem } from '@ui-kitten/components';
 import { useEffect, useLayoutEffect } from 'react';
-import { View, Text, Button, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { View, Text, Button, TouchableOpacity, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import ActionConstants from '../redux/reduxConstants';
@@ -11,10 +11,11 @@ import InsetShadow from 'react-native-inset-shadow';
 import { toggleDrawer } from '../utilities/RootNavigator';
 import { LinearGradient } from 'expo-linear-gradient';
 import ShimmerPlaceholder from 'react-native-shimmer-placeholder';
+import mainStore from '../redux/store';
 
 
 export default function Dashboard() {
-    
+
     const dispatch = useDispatch();
 
     // contextos

@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet, View, Text, Image, TouchableOpacity, BackHandler, ImageBackground, TouchableWithoutFeedback, Animated } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Dashboard from "./dashboard";
 import { FontAwesome } from "@expo/vector-icons";
@@ -11,19 +11,36 @@ import Groceries from "./groceries";
 import { LinearGradient } from "expo-linear-gradient";
 import { PrimaryColor, SecondaryColor } from '../utilities/ColorPalette';
 import * as Animatable from 'react-native-animatable';
+import { useDispatch, useSelector } from 'react-redux';
+import ActionConstants from '../redux/reduxConstants';
+import mainStore from '../redux/store';
 
 
 const TabNavigator = createBottomTabNavigator();
 const DrawerNavigator = createDrawerNavigator();
 
+var button1ShowRef;
+var button2ShowRef;
 
+var dispatch;
+var state;
 
 function CustomTabBar({ state, descriptors, navigation, insets }) {
     
 
     const animateShow = () => {
-        buttonShow1Ref.animate({ 0: { opacity: 0 }, 1: { opacity: 1 } });
-        buttonShow2Ref.animate({ 0: { opacity: 0 }, 1: { opacity: 1 } });
+        dispatch({ type: ActionConstants.TOGGLE_TABBAR_ADD });
+        
+        const state = mainStore.getState().state;
+
+        if (state.areTabbarActionsShown) {
+            button1ShowRef.current.animate({ 0: { opacity: 0 }, 0.6: { opacity: 1 } });
+            button2ShowRef.current.animate({ 0: { opacity: 0 }, 0.6: { opacity: 1 } });
+        }
+        else {
+            button1ShowRef.current.animate({ 0: { opacity: 1 }, 0.4: { opacity: 0 } });
+            button2ShowRef.current.animate({ 0: { opacity: 1 }, 0.4: { opacity: 0 } });
+        }
     }
 
     return (
@@ -45,12 +62,12 @@ function CustomTabBar({ state, descriptors, navigation, insets }) {
                 </View>
                 <View style={{ position: 'absolute', top: -100, left: 0, right: 0, bottom: 80, justifyContent: 'flex-end', alignItems: 'center' }}>
                     <TouchableOpacity>
-                        <Animatable.View ref={buttonShow1Ref} style={{ marginBottom: 10, width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(0, 0, 0, 0.25)", shadowRadius: 4, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 1 }}>
+                        <Animatable.View ref={button1ShowRef} style={{ opacity: 0, marginBottom: 10, width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(0, 0, 0, 0.25)", shadowRadius: 4, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 1 }}>
                             <FontAwesome name="tasks" size={30} ></FontAwesome>
                         </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity>
-                        <Animatable.View ref={buttonShow2Ref} style={{ width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(0, 0, 0, 0.25)", shadowRadius: 4, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 1 }}>
+                        <Animatable.View ref={button2ShowRef} style={{ opacity: 0, width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(0, 0, 0, 0.25)", shadowRadius: 4, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 1 }}>
                             <FontAwesome name="home" size={30} ></FontAwesome>
                         </Animatable.View>
                     </TouchableOpacity>
@@ -111,6 +128,10 @@ function Drawer() {
 }
 
 export default function Main() {
+    button1ShowRef = useRef(null);
+    button2ShowRef = useRef(null);
+
+    dispatch = useDispatch();
 
     const handleBackPress = () => {
         return true;

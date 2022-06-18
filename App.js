@@ -13,13 +13,13 @@ import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import { setCustomText, setCustomTextInput } from 'react-native-global-props/src';
 import { Provider } from 'react-redux';
-import generateStore from './redux/store';
 import FlashMessage from 'react-native-flash-message';
 import { applyMiddleware, createStore } from 'redux';
 import userReducer from './redux/reducers/userReducer';
 import createSagaMiddleware from 'redux-saga'
 import thunk from 'redux-thunk';
 import Register from './views/register';
+import mainStore from './redux/store';
 
 
 
@@ -49,7 +49,7 @@ export default function App() {
   setCustomText(defaultTextPropsOverride);
 
   // redux saga & thunk store
-   const store = generateStore();
+   const store = mainStore;
 
   return (
     <Provider store={store}>

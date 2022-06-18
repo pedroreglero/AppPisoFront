@@ -3,15 +3,17 @@ import thunk from 'redux-thunk';
 import userReducer from './reducers/userReducer';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas/rootSaga';
+import stateReducer from './reducers/stateReducer';
 
 const rootReducer = combineReducers({
-    usuarios: userReducer
+    usuarios: userReducer,
+    state: stateReducer
 });
 
-export default function generateStore() {
-    const sagaMiddleware = createSagaMiddleware();
-    const middleWares = [sagaMiddleware, thunk];
-    const store = createStore(rootReducer, compose(applyMiddleware(...middleWares)));
-    sagaMiddleware.run(rootSaga);
-    return store;
-}
+
+const sagaMiddleware = createSagaMiddleware();
+const middleWares = [sagaMiddleware, thunk];
+const mainStore = createStore(rootReducer, compose(applyMiddleware(...middleWares)));
+sagaMiddleware.run(rootSaga);
+
+export default mainStore;
