@@ -63,7 +63,7 @@ function CustomTabBar({ state, descriptors, navigation, insets }) {
                 <View style={{ position: 'absolute', top: -100, left: 0, right: 0, bottom: 80, justifyContent: 'flex-end', alignItems: 'center' }}>
                     <TouchableOpacity>
                         <Animatable.View ref={button1ShowRef} style={{ opacity: 0, marginBottom: 10, width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(0, 0, 0, 0.25)", shadowRadius: 4, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 1 }}>
-                            <FontAwesome name="tasks" size={30} ></FontAwesome>
+                            <Image source={require("../assets/images/task.png")} style={{ width: 37, height: 37, resizeMode: "contain" }}></Image>
                         </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity>
