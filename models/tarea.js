@@ -1,5 +1,5 @@
 class Tarea {
-    constructor(id, name, created_by, created_on, status, due_to, notify_assignees, assignees, finished_on, finished_by, cancelled_on, cancelled_by) {
+    constructor(id, name, created_by, created_on, status, due_to, notify_assignees, assignees, finished_on, finished_by, cancelled_on, cancelled_by, piso_id) {
         this.id = id;
         this.name = name;
         this.created_by = created_by;
@@ -12,5 +12,6 @@ class Tarea {
         this.finished_by = finished_by;
         this.cancelled_on = cancelled_on;
         this.cancelled_by = cancelled_by;
+        this.piso_id = piso_id;
     }
 }
