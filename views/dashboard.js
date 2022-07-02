@@ -58,7 +58,7 @@ export default function Dashboard() {
             return "green";
         }
         else if (diffHours > 24) {
-            return "orange";
+            return "#B1B8FB";
         }
         else {
             return "red";

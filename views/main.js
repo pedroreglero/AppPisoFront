@@ -14,6 +14,7 @@ import * as Animatable from 'react-native-animatable';
 import { useDispatch, useSelector } from 'react-redux';
 import ActionConstants from '../redux/reduxConstants';
 import mainStore from '../redux/store';
+import Drawer from './drawer';
 
 
 const TabNavigator = createBottomTabNavigator();
@@ -60,15 +61,15 @@ function CustomTabBar({ state, descriptors, navigation, insets }) {
                         <Image source={require("../assets/images/ranking.png")} style={{ width: 37, height: 37, resizeMode: "contain" }}></Image>
                     </TouchableOpacity>
                 </View>
-                <View style={{ position: 'absolute', top: -100, left: 0, right: 0, bottom: 80, justifyContent: 'flex-end', alignItems: 'center' }}>
+                <View style={{ position: 'absolute', top: -100, left: 0, right: 0, bottom: 50, justifyContent: 'center', alignItems: 'center', flexDirection: "row" }}>
                     <TouchableOpacity>
-                        <Animatable.View ref={button1ShowRef} style={{ opacity: 0, marginBottom: 10, width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(0, 0, 0, 0.25)", shadowRadius: 4, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 1 }}>
-                            <Image source={require("../assets/images/task.png")} style={{ width: 37, height: 37, resizeMode: "contain" }}></Image>
+                        <Animatable.View ref={button1ShowRef} style={{ opacity: 0, marginRight: 25, width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(0, 0, 0, 0.25)", shadowRadius: 4, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 1 }}>
+                            <Image source={require("../assets/images/task.png")} style={{ width: 37, height: 37, resizeMode: "contain", top: 4 }}></Image>
                         </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity>
-                        <Animatable.View ref={button2ShowRef} style={{ opacity: 0, width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(0, 0, 0, 0.25)", shadowRadius: 4, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 1 }}>
-                            <FontAwesome name="home" size={30} ></FontAwesome>
+                        <Animatable.View ref={button2ShowRef} style={{ opacity: 0, width: 60, height: 60, backgroundColor: "#F8F8F8", borderColor: "#FFFFFF", borderWidth: 2, borderRadius: 30, minHeight: 60, minWidth: 60, maxHeight: 60, maxWidth: 60, justifyContent: "center", alignItems: "center", shadowColor: "rgba(212, 39, 206, 0.95)", shadowRadius: 15, shadowOffset: { width: 0, height: 0 }, shadowOpacity: 1 }}>
+                        <Image source={require("../assets/images/bell.png")} style={{ width: 37, height: 37, resizeMode: "contain" }}></Image>
                         </Animatable.View>
                     </TouchableOpacity>
                 </View>
@@ -113,25 +114,13 @@ function MainTabs() {
     );
 }
 
-function Drawer() {
-    return (
-        <ImageBackground resizeMethod='resize' resizeMode='contain' source={require("../assets/images/bgDrawer.png")} style={{ flex: 1, padding: 10 }}>
-            <SafeAreaView>
-                <View>
-                    <TouchableOpacity activeOpacity={0.8}>
-                        <Image source={require("../assets/images/perfilTest.png")} style={{ width: 150, height: 150, borderRadius: 75, borderWidth: 4, borderColor: "white", shadowOffset: { height: 10 }, shadowOpacity: 0.3, shadowRadius: 5, shadowColor: "black" }} />
-                    </TouchableOpacity>
-                </View>
-            </SafeAreaView>
-        </ImageBackground>
-    );
-}
-
 export default function Main() {
     button1ShowRef = useRef(null);
     button2ShowRef = useRef(null);
 
     dispatch = useDispatch();
+
+    const userState = mainStore.getState().usuarios;
 
     const handleBackPress = () => {
         return true;
@@ -145,9 +134,16 @@ export default function Main() {
         };
     }, []);
 
-    return (
-        <DrawerNavigator.Navigator initialRouteName="Main2" backBehavior="none" drawerContent={Drawer}>
-            <DrawerNavigator.Screen name="Main2" component={MainTabs} options={{ headerShown: false }} />
-        </DrawerNavigator.Navigator>
-    );
+    if (!!userState.usuario.assigned_Piso) {
+        return (
+            <DrawerNavigator.Navigator initialRouteName="Main2" backBehavior="none" drawerContent={Drawer}>
+                <DrawerNavigator.Screen name="Main2" component={MainTabs} options={{ headerShown: false }} />
+            </DrawerNavigator.Navigator>
+        )
+    }
+    else {
+        return (
+            <Drawer></Drawer>
+        );
+    }
 }

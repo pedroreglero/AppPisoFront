@@ -1,10 +1,11 @@
+import { Usuario } from '../../models/models';
 import ActionConstants from '../reduxConstants';
 
 
 
 const defaultState = {
-    usuario: null,
-    token: null
+    usuario: new Usuario(),
+    token: ""
 }
 
 export default function userReducer(state = defaultState, action) {
